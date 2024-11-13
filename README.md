@@ -113,8 +113,6 @@ d.rotate(n)          # Rotate n steps right (negative for left)
 ```
 
 ## Heapq
-Time Complexities:
-![Heapq Operations](https://user-images.githubusercontent.com/47276307/172330122-29cf0756-89bc-4654-a4e8-4e318156c7d1.jpg)
 
 ```python
 import heapq
