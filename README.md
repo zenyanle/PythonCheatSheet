@@ -6,696 +6,393 @@ A Cheat Sheet 📜 to **revise** Python syntax in **less time**. Particularly us
 > Get a PDF of this sheet at the end. <br>
 > Leave a ⭐ if you like the cheat sheet (contributions welcome!) <br>
 
+# Table of Contents
+- [Basics](#basics)
+- [Data Structures](#data-structures)
+  - [Lists](#lists)
+  - [Dictionary](#dictionary)
+  - [Counter](#counter)
+  - [Deque](#deque)
+  - [Heapq](#heapq)
+  - [Sets](#sets)
+  - [Tuples](#tuples)
+  - [Strings](#strings)
+- [Built-in Functions](#built-in-functions)
+- [Advanced Topics](#advanced-topics)
+- [Best Practices](#best-practices)
+- [Tips & Gotchas](#tips--gotchas)
+
 # Basics
 
-- Data Types
+## Data Types
+![Python Data Types](https://user-images.githubusercontent.com/59110866/173563442-1a6fa3d2-b569-4eb0-99cc-9b91cc8be1eb.png)
 
-    ![Untitled](https://user-images.githubusercontent.com/59110866/173563442-1a6fa3d2-b569-4eb0-99cc-9b91cc8be1eb.png)
-
-- Operators and it’s precedence
-    
-    ![Untitled](https://user-images.githubusercontent.com/47276307/172329850-61fc0809-a4b0-416c-848b-1c502ecb4772.jpg)
-    
+## Operator Precedence
+![Python Operators](https://user-images.githubusercontent.com/47276307/172329850-61fc0809-a4b0-416c-848b-1c502ecb4772.jpg)
 
 # Data Structures
 
-*Important data structures for LeetCode*
-
 ## Lists
-
-> Lists are used to store multiple items in a single variable
-> 
-- *Operations Time Complexities*
-    
-    ![Untitled](https://user-images.githubusercontent.com/47276307/172330098-1c5f0a6e-7f80-4f4f-9be6-1d734e2c70cd.jpg)
-    
+Time Complexities:
+![List Operations](https://user-images.githubusercontent.com/47276307/172330098-1c5f0a6e-7f80-4f4f-9be6-1d734e2c70cd.jpg)
 
 ```python
 nums = [1,2,3]
 
-nums.index(1) # returns index
-nums.append(1) # appends 1
-nums.insert(0,10) # inserts 10 at 0th index
-nums.remove(3) # removes all instances of 3
-nums.copy(1) # returns copy of the list
-nums.count(1) # returns no.of times '1' is present in the list
-nums.extend(someOtherList) # ...
-nums.pop() # pops last element [which element to pop can also be given as optional argument]
-nums.reverse() # reverses original list (nums in this case)
-nums.sort() # sorts list [does NOT return sorted list]
-#Python's default sort uses Tim Sort, which is a combination of both merge sort and insertion sort.
-```
+# Common Operations
+nums.index(1)      # Find index
+nums.append(1)     # Add to end
+nums.insert(0,10)  # Add 10 from left (at index 0 which is start)
+nums.remove(3)     # Remove value
+nums.pop()         # Remove & return last element
+nums.sort()        # In-place sort (TimSort: O(n log n))
+nums.reverse()     # In-place reverse
+nums.copy()        # Return shallow copy
 
-List or String slicing in Python
-
-- Resource
-    
-    [Understanding slice notation](https://stackoverflow.com/questions/509211/understanding-slice-notation)
-    
-
-```python
-It's pretty simple really:
-
-a[start:stop]  # items start through stop-1
-a[start:]      # items start through the rest of the array
-a[:stop]       # items from the beginning through stop-1
-a[:]           # a copy of the whole array
-There is also the step value, which can be used with any of the above:
-
-a[start:stop:step] # start through not past stop, by step
-The key point to remember is that the :stop value represents the first value
-that is not in the selected slice. So, the difference between stop and start is
-the number of elements selected (if step is 1, the default).
-
-The other feature is that start or stop may be a negative number, which means
-it counts from the end of the array instead of the beginning. So:
-
-a[-1]    # last item in the array
-a[-2:]   # last two items in the array
-a[:-2]   # everything except the last two items
-Similarly, step may be a negative number:
-
-a[::-1]    # all items in the array, reversed
-a[1::-1]   # the first two items, reversed
-a[:-3:-1]  # the last two items, reversed
-a[-3::-1]  # everything except the last two items, reversed
-Python is kind to the programmer if there are fewer items than you ask for. For
-example, if you ask for a[:-2] and a only contains one element, you get an
-empty list instead of an error. Sometimes you would prefer the error, so you
-have to be aware that this may happen.
-
-Relation to slice() object
-The slicing operator [] is actually being used in the above code with a slice()
-object using the : notation (which is only valid within []), i.e.:
-
-a[start:stop:step]
-is equivalent to:
-
-a[slice(start, stop, step)]
-Slice objects also behave slightly differently depending on the number of
-arguments, similarly to range(), i.e. both slice(stop) and slice(start, stop[,
-step]) are supported. To skip specifying a given argument, one might use None,
-so that e.g. a[start:] is equivalent to a[slice(start, None)] or a[::-1] is
-equivalent to a[slice(None, None, -1)].
-
-While the :-based notation is very helpful for simple slicing, the explicit use
-of slice() objects simplifies the programmatic generation of slicing.
+# List Slicing
+nums[start:stop:step]  # Generic slice syntax
+nums[-1]    # Last item
+nums[::-1]  # Reverse list
+nums[1:]    # Everything after index 1
+nums[:3]    # First three elements
 ```
 
 ## Dictionary
-
-> Dictionaries are used to store data values in key:value pairs. *Info about **collections.Counter()** available below.*
-> 
-- *Operations Time Complexities*
-    
-    ![Untitled](https://user-images.githubusercontent.com/47276307/172330107-e68e3228-1c76-4bfb-bb38-04d18f94d5b9.jpg)
-    
+Time Complexities:
+![Dictionary Operations](https://user-images.githubusercontent.com/47276307/172330107-e68e3228-1c76-4bfb-bb38-04d18f94d5b9.jpg)
 
 ```python
-dict = {'a':1,'b':2,'c':3}
+d = {'a':1, 'b':2}
 
-dict.keys() # returns list of keys of dictionary
-dict.values() # returns list of values of dictionary
-dict.get('a') # returns value for any corresponding key
-dict.items() # returns [('a',1),('b',2),('c',3)]
-dict.copy() # returns copy of the dictionary
-# NOTE : items() Returns view object that will be updated with any future
-# changes to dict
-dict.pop(KEY) # pops key-value pair with that key
-dict.popitem() # removes most recent pair added
-dict.setDefault(KEY,DEFAULT_VALUE)
-# returns value of key, if key exists, else default value returned
-# If the key exist, this parameter(DEFAULT_VALUE) has no effect.
-# If the key does not exist, DEFAULT_VALUE becomes the key's value. 2nd
-# argument's default is None.
-dict.update({KEY:VALUE})
-# inserts pair in dictionary if not present, if present, corresponding value is
-# overriden (not key)
-# defaultdict ensures that if any element is accessed that is not present in
-# the dictionary
-# it will be created and error will not be thrown (which happens in normal dictionary)
-# Also, the new element created will be of argument type, for example in the below line
-# an element of type 'list' will be made for a Key that does not exist
-myDictionary = defaultdict(list) 
+# Essential Operations
+d.get('key', default)     # Safe access with default
+d.setdefault('key', 0)    # Set if missing
+d.items()                 # Key-value pairs
+d.keys()                  # Just keys
+d.values()               # Just values
+d.pop(key)              # Remove and return value
+d.update({key: value})  # Batch update
+
+# Advanced Usage
+from collections import defaultdict
+d = defaultdict(list)     # Auto-initialize missing keys
+d = defaultdict(int)      # Useful for counting
 ```
 
 ## Counter
-
-> Python Counter is a container that will hold the count of each of the elements present in the container. The counter is a sub-class available inside the dictionary class. Specifically used for element frequencies
-> 
-
-*Pretty similar to dictionary, in fact I use* **defaultdict(int)** *most of the time* 
-
 ```python
-from collections import Counter #(capital 'C')
-# can also be used as 'collections.Counter()' in code
+from collections import Counter
 
-list1 = ['x','y','z','x','x','x','y', 'z']
+# Initialize
+c = Counter(['a','a','b'])    # From iterable
+c = Counter("hello")          # From string
 
-# Initialization
-Counter(list1) # => Counter({'x': 4, 'y': 2, 'z': 2})
-Counter("Welcome to Guru99 Tutorials!") # => Counter({'o': 3, ' ': 3, 'u': 3, 'e': 2.....})
-
-# Updating
-counterObject = collections.Counter(list1)
-counterObject.keys() = [ 'x' , 'y' , 'z' ]
-most_common_element = counterObject.most_common(1) # [('x', 4)]
-counterObject.update("some string") # => Counter({'o': 3, 'u': 3, 'e': 2, 's': 2})
-counterObject['s'] += 1 # Increase/Decrease frequency
-
-# Accessing
-frequency_of_s = counterObject['s']
-
-# Deleting
-del couterObject['s']
-
+# Operations
+c.most_common(2)      # Top 2 frequent elements
+c['a'] += 1           # Increment count
+c.update("more")      # Add counts from iterable
+c.total()             # Sum of all counts
 ```
 
 ## Deque
-
-> A double-ended queue, or deque, has the feature of adding and removing elements from either end.
-> 
-- *Operations Time Complexities*
-    
-    ![Untitled](https://user-images.githubusercontent.com/47276307/172330115-78500420-3276-4e45-8ce3-fd668b7eb14e.jpg)
-    
+Time Complexities:
+![Deque Operations](https://user-images.githubusercontent.com/47276307/172330115-78500420-3276-4e45-8ce3-fd668b7eb14e.jpg)
 
 ```python
-
-#in BFS(Breadth-first search) or other algorithms where we have to pop or add elements to the begining , deque is the best option 
-#we can also use list, but list.pop(0) is O(n) operation where as dequeu.popleft() is O(1)
-
 from collections import deque
 
-queue = deque(['name','age','DOB'])
-
-queue.append("append_from_right") # Append from right
-queue.pop() # Pop from right
-
-queue.appendleft("fromLeft") # Append from left
-queue.popleft() # Pop from left
-
-queue.index(element,begin_index,end_index) # Returns first index of element b/w the 2 indices.
-queue.insert(index,element)
-queue.remove() # removes first occurrance
-queue.count() # obvious
-
-queue.reverse() # reverses order of queue elements
+# Perfect for BFS - O(1) operations on both ends
+d = deque()
+d.append(1)          # Add right
+d.appendleft(2)      # Add left
+d.pop()              # Remove right
+d.popleft()          # Remove left
+d.extend([1,2,3])    # Extend right
+d.extendleft([1,2,3])# Extend left
+d.rotate(n)          # Rotate n steps right (negative for left)
 ```
 
 ## Heapq
-
-> As we know the Heap Data Structure is used to implement the Priority Queue ADT. In python we can directly access a Priority Queue implemented using a Heap by using the **Heapq** library/module.
-> 
-- *Operations Time Complexities*
-    
-    ![Untitled](https://user-images.githubusercontent.com/47276307/172330122-29cf0756-89bc-4654-a4e8-4e318156c7d1.jpg)
-    
+Time Complexities:
+![Heapq Operations](https://user-images.githubusercontent.com/47276307/172330122-29cf0756-89bc-4654-a4e8-4e318156c7d1.jpg)
 
 ```python
-import heapq # (minHeap by Default)
-
-nums = [5, 7, 9, 1, 3]
-
-heapq.heapify(nums) # converts list into heap. Can be converted back to list by list(nums).
-heapq.heappush(nums,element) # Push an element into the heap
-heapq.heappop(nums) # Pop an element from the heap
-# heappush(heap, ele) :- This function is used to insert the element mentioned
-# in its arguments into heap. The order is adjusted, so as heap structure is
-# maintained.
-# heappop(heap) :- This function is used to remove and return the smallest
-# element from heap. The order is adjusted, so as heap structure is maintained.
-
-# Other Methods Available in the Library
-# Used to return the k largest elements from the iterable specified 
-# The key is a function with that accepts single element from iterable,
-# and the returned value from that function is then used to rank that element in the heap
-heapq.nlargest(k, iterable, key = fun)
-heapq.nsmallest(k, iterable, key = fun)
-
-
-#Max heap in python 
-
-#By default heapq in python is min heap, 
-#if we want to use max heap we can simply invert the value of the keys and use heapq. 
-#For example, turn 1000.0 into -1000.0 and 5.0 into -5.0.
-
-#The easiest and ideal solution
-#Multiply the values by -1
-
-#All the highest numbers are now the lowest and vice versa.
-
-#Just remember that when you pop an element to multiply it with -1 in order to get the original value again.
-
-#Example: 
-
 import heapq
+
+# MinHeap Operations - All O(log n) except heapify
+nums = [3,1,4,1,5]
+heapq.heapify(nums)          # Convert to heap in-place: O(n)
+heapq.heappush(nums, 2)      # Add element: O(log n)
+smallest = heapq.heappop(nums)  # Remove smallest: O(log n)
+
+# MaxHeap Trick: Multiply by -1
+nums = [-x for x in nums]    # Convert to maxheap: O(n)
+heapq.heapify(nums)          # O(n)
+largest = -heapq.heappop(nums)  # Get largest: O(log n)
+
+# Advanced Operations
+k_largest = heapq.nlargest(k, nums)    # O(n * log k)
+k_smallest = heapq.nsmallest(k, nums)  # O(n * log k)
+
+# Custom Priority Queue
 heap = []
-heapq.heappush(heap, 1*(-1))
-heapq.heappush(heap, 10*(-1))
-heapq.heappush(heap, 20*(-1))
-print(heap)
-
-The output will look like:
-
-[-20, -1, -10]
-
-#when popping element multiply it with -1
-
-max_element = -heapq.heappop(heap)
-print(max_element)
-
-Output will be:
-20
+heapq.heappush(heap, (priority, item))  # Sort by priority
 ```
 
 ## Sets
-
-> A set is a collection which is unordered, immutable, unindexed, No Duplicates.
-> 
-- *Operations Time Complexities*
-    
-    ![Untitled](https://user-images.githubusercontent.com/47276307/172330132-7a785f5f-bbc6-43b9-b82f-794190813787.jpg)
-    
+Time Complexities:
+![Untitled](https://user-images.githubusercontent.com/47276307/172330132-7a785f5f-bbc6-43b9-b82f-794190813787.jpg)
 
 ```python
-set = {1,2,3}
+s = {1,2,3}
 
-set.add(item)
-set.remove(item)
-set.discard(item) | set.remove(item)
-# removes item | remove will throw error if item is not there, discard will not
-set.pop() # removes random item (since unordered)
+# Common Operations
+s.add(4)             # Add element
+s.remove(4)          # Remove (raises error if missing)
+s.discard(4)         # Remove (no error if missing)
+s.pop()              # Remove and return arbitrary element
 
-set.isdisjoint(anotherSet) # returns true if no common elements
-set.issubset(anotherSet) # returns true if all elements from anotherSet is present in original set
-set.issuperset(anotherSet) # returns true if all elements from original set is present in anotherSet
-
-set.difference(anotherSet) # returns set containing items ONLY in first set
-set.difference_update(anotherSet) # removes common elements from first set [no new set is created or returned]
-set.intersection(anotherSet) # returns new set with common elements
-set.intersection_update(anotherSet) # modifies first set keeping only common elements
-set.symmetric_difference(anotherSet) # returns set containing all non-common elements of both sets
-set.symmetric_difference_update(anotherSet) # same as symmetric_difference but changes are made on original set
-
-set.union(anotherSet) # ...
-set.update(anotherSet) # adds anotherSet without duplicate
-
+# Set Operations
+a.union(b)           # Elements in a OR b
+a.intersection(b)    # Elements in a AND b
+a.difference(b)      # Elements in a but NOT in b
+a.symmetric_difference(b)  # Elements in a OR b but NOT both
+a.issubset(b)        # True if all elements of a are in b
+a.issuperset(b)      # True if all elements of b are in a
 ```
 
 ## Tuples
-
-> A [tuple](https://www.scaler.com/topics/python/tuples-in-python/) is a collection which is ordered, unchangeable and can contain duplicate values
-> 
-- *Operations Time Complexities*
-    
-    Similar to list
-    
-
 ```python
-tuple = (1,2,3,1)
+# Tuples are immutable lists
+t = (1, 2, 3, 1)
 
-tuple.count(1) # returns occurence of an item
-tuple.index(1) # returns index of 1 in array
+# Essential Operations
+t.count(1)      # Count occurrences of value
+t.index(2)      # Find first index of value
+
+# Useful Patterns
+x, y = (1, 2)   # Tuple unpacking
+coords = [(1,2), (3,4)]  # Tuple in collections
 ```
 
 ## Strings
-
-[Python String isnumeric()](https://www.programiz.com/python-programming/methods/string/isnumeric)
-
 ```python
-# ** split Function **
-# The split() method breaks up a string at the specified separator and returns
-# a list of strings.
-text = 'Python is a fun programming language'
+s = "hello world"
 
-# split the text from space
-print(text.split(' '))
-# Output: ['Python', 'is', 'a', 'fun', 'programming', 'language']
+# Essential Methods
+s.split()            # Split on whitespace
+s.split(',')         # Split on comma
+s.strip()            # Remove leading/trailing whitespace
+s.lower()            # Convert to lowercase
+s.upper()            # Convert to uppercase
+s.isalnum()          # Check if alphanumeric
+s.isalpha()          # Check if alphabetic
+s.isdigit()          # Check if all digits
+s.find('sub')        # Index of substring (-1 if not found)
+s.count('sub')       # Count occurrences
+s.replace('old', 'new')  # Replace all occurrences
 
-# convert string to list
-s="abcd"
-s=list(s)
-print(s)
-# Output: ['a', 'b', 'c', 'd']
+# ASCII Conversion
+ord('a')             # Char to ASCII (97)
+chr(97)              # ASCII to char ('a')
 
-# ** count Function **
-# The count() method returns the number of occurrences of a substring in the given string.
-# Example
-message = 'python is popular programming language'
-# number of occurrence of 'p'
-print('Number of occurrence of p:', message.count('p')) # Output: Number of occurrence of p: 4
-
-# The isnumeric() method returns True if all characters in a string are numeric characters. If not, it returns False.
-s = '1242323'
-print(s.isnumeric()) #Output: True
-
-# The find() method returns the index of first occurrence of the substring (if found). If not found, it returns -1.
-# check the index of 'fun'
-print(message.find('fun')) # Output: 12
-
-# The isalnum() method returns True if all characters in the string are alphanumeric (either alphabets or numbers). If not, it returns False.
-
-name = "M3onica Gell22er "
-print(name.isalnum()) # Output : False
-
-# The isalpha() method returns True if all characters in the string are alphabets. If not, it returns False
-name = "Monica"
-print(name.isalpha()) #output true
-
-# other important functions
-string.strip([chars]) #The strip() method returns a copy of the string by removing both the leading and the trailing characters (based on the string argument passed).
-string.upper() # The upper() method converts all lowercase characters in a string into uppercase characters and returns it.
-string.lower() # The lower() method converts all uppercase characters in a string into lowercase characters and returns it.
-string.islower() # The islower() method returns True if all cased characters in the string are lowercase and there is at least one cased character, False otherwise.
-string.isdigit() 
-string.isupper() # The isupper() method returns True if all cased characters in the string are uppercase and there is at least one cased character, False otherwise.
+# Join Lists
+''.join(['a','b'])   # Concatenate list elements
 ```
 
-# Built-in or Library functions
+# Built-in Functions
 
-- Functions to iterate over list / other iterable (tuple, dictionaries)
-    
-    ```python
-    
-    ** map(fun, iter) **
-    # fun : It is a function to which map passes each element of given iterable.
-    # iter : It is a iterable which is to be mapped.
-    
-    ** zip(list,list) **
-    for elem1,elem2 in zip(firstList,secondList):
-    	# will merge both lists and produce tuples with both elements
-    	# Tuples will stop at shortest list (in case of both lists having different len)
-    # Example
-    '''
-    a = ("John", "Charles", "Mike")
-    b = ("Jenny", "Christy", "Monica")
-    
-    x = zip(a, b)
-    
-    # use the tuple() function to display a readable version of the result:
-    
-    print(tuple(x))
-    o/p: (('John', 'Jenny'), ('Charles', 'Christy'), ('Mike', 'Monica'))
-    '''
-    
-    ** any(list) ** [ OPPOSITE IS => ** all() ** ]
-    any(someList) # returns true if ANY element in list is true [any string, all numbers except 0 also count as true]
-    
-    ** enumerate(list|tuple) ** 
-    # [when you need to attach indexes to lists or tuples ]
-    enumerate(anyList) # ['a','b','c'] => [(0, 'a'), (1, 'b'), (2, 'c')]
-    
-    ** filter(function|list) **
-    filter(myFunction,list) # returns list with elements that returned true when passed in function
-    
-    ***************** import bisect ***********************
-    
-    ** bisect.bisect(list,number,begin,end) ** O(log(n))
-    # [ returns the index where the element should be inserted 
-    #		such that sorting order is maintained ]
-    a = [1,2,4]
-    bisect.bisect(a,3,0,4) # [1,2,4] => 3 coz '3' should be inserted in 3rd index to maintain sorting order
-    
-    # Other variants of this functions are => bisect.bisect_left() | bisect.bisect_right()
-    # they have same arguments. Suppose the element we want to insert is already present
-    # in the sorting list, the bisect_left() will return index left of the existing number
-    # and the bisect_right() or bisect() will return index right to the existing number
-    
-    # ** bisect.insort(list,number,begin,end)       ** O(n) to insert
-    # ** bisect.insort_right(list,number,begin,end) ** 
-    # ** bisect.insort_left(list,number,begin,end)  ** 
-    
-    The above 3 functions are exact same of bisect.bisect(), the only difference
-    is that they return the sorted list after inserting and not the index. The
-    left() right() logic is also same as above.
-    ```
-    
-- Getting ASCII value of a character
-    
-    ```python
-    ** ord(str) **
-    # returns ascii value of the character , Example ord("a") = 97
-    ** chr(int) ** 
-    # return character of given ascii value , Example chr(97) = "a"
-    ```
-    
+```python
+# Iteration Helpers
+enumerate(lst)        # Index + value pairs
+zip(lst1, lst2)      # Parallel iteration
+map(fn, lst)         # Apply function to all elements
+filter(fn, lst)      # Keep elements where fn returns True
+any(lst)             # True if any element is True
+all(lst)             # True if all elements are True
 
-# Clean Code Tips
+# Binary Search (import bisect)
+bisect.bisect(lst, x)     # Find insertion point
+bisect.bisect_left(lst, x)# Find leftmost insertion point
+bisect.insort(lst, x)     # Insert maintaining sort
 
-- **Doc Strings -**  Documentation for your functions in the interview to look slick 😎
-    
-    A docstring is short for documentation string.
-    
-    Python docstrings (documentation strings) are the [string](https://www.programiz.com/python-programming/string) literals that appear right after the definition of a function, method, class, or module.
-    
-    Triple quotes are used while writing docstrings. For example:
-    
-    ```
-    def double(num):
-        """Function to double the value"""
-        return 2*num
-    ```
-    
-    Docstrings appear right after the definition of a function, class, or a module. This separates docstrings from multiline comments using triple quotes.
-    
-    The docstrings are associated with the object as their `__doc__` attribute.
-    
-    So, we can access the docstrings of the above function with the following lines of code:
-    
-    ```
-    def double(num):
-        """Function to double the value"""
-        return 2*num
-    print(double.__doc__)
-    ```
-    
-    **Output**
-    
-    ```
-    Function to double the value
-    ```
-    
-- Use **Assert keyword** in python for testing edge cases. Looks more professional.
-    
-    ### Definition and Usage
-    
-    The `assert` keyword is used when debugging code.
-    
-    The `assert` keyword lets you test if a condition in your code returns True, if not, the program will raise an AssertionError.
-    
-    You can write a message to be written if the code returns False, check the example below.
-    
-    ```python
-    x = "hello"
-    
-    #if condition returns False, AssertionError is raised:
-    assert x == "goodbye", "x should be 'hello'"
-    ```
-    
-- **ALWAYS** be aware of any code snippet that is being **REPEATED** in your solution. **MODULARITY** #1 Priority. Refactoring is also an important part of  interview.
-    - This is usually asked as a follow up after coding the solution. *Are there any changes you want to make to this solution?*
+# Type Conversion
+int('42')            # String to int
+str(42)              # Int to string
+list('abc')          # String to list
+''.join(['a','b'])   # List to string
+set([1,2,2])         # List to set
 
-# Miscellaneous
+# Math
+abs(-5)              # Absolute value
+pow(2, 3)            # Power
+round(3.14159, 2)    # Round to decimals
+```
 
-- How to take multiple line input in python?
-    
-    [Taking multiple inputs from user in Python - GeeksforGeeks](https://www.geeksforgeeks.org/taking-multiple-inputs-from-user-in-python/)
-    
-    - Using split() method
-    - Using List comprehension
-    
-    **Syntax :**
-    
-    ```
-    input().split(separator, maxsplit)
-    ```
-    
-    ## Example
-    
-    ```python
-    # Python program showing how to
-    # multiple input using split
-     
-    # taking two inputs at a time
-    x, y = input("Enter a two value: ").split()
-    print("Number of boys: ", x)
-    print("Number of girls: ", y)
-    print()
-     
-    # taking three inputs at a time
-    x, y, z = input("Enter a three value: ").split()
-    print("Total number of students: ", x)
-    print("Number of boys is : ", y)
-    print("Number of girls is : ", z)
-    print()
-     
-    # taking two inputs at a time
-    a, b = input("Enter a two value: ").split()
-    print("First number is {} and second number is {}".format(a, b))
-    print()
-     
-    # taking multiple inputs at a time
-    # and type casting using list() function
-    x = list(map(int, input("Enter a multiple value: ").split()))
-    print("List of students: ", x)
-    ```
-    
-    ```python
-    # Python program showing
-    # how to take multiple input
-    # using List comprehension
-     
-    # taking two input at a time
-    x, y = [int(x) for x in input("Enter two value: ").split()]
-    print("First Number is: ", x)
-    print("Second Number is: ", y)
-    print()
-     
-    # taking three input at a time
-    x, y, z = [int(x) for x in input("Enter three value: ").split()]
-    print("First Number is: ", x)
-    print("Second Number is: ", y)
-    print("Third Number is: ", z)
-    print()
-     
-    # taking two inputs at a time
-    x, y = [int(x) for x in input("Enter two value: ").split()]
-    print("First number is {} and second number is {}".format(x, y))
-    print()
-     
-    # taking multiple inputs at a time
-    x = [int(x) for x in input("Enter multiple value: ").split()]
-    print("Number of list is: ", x)
-    
-    # taking multiple inputs at a time separated by comma
-    x = [int(x) for x in input("Enter multiple value: ").split(",")]
-    print("Number of list is: ", x)
-    ```
-    
-- Important Python Math Functions
-    
-    [Python Math Module - GeeksforGeeks](https://www.geeksforgeeks.org/python-math-module/)
-    
-    - Log Function
-    
-    [Log functions in Python - GeeksforGeeks](https://www.geeksforgeeks.org/log-functions-python/)
-    
-    ```
-    Syntax :
-    math.log(a,Base)
-    Parameters :a : The numeric value
-    Base :  Base to which the logarithm has to be computed.
-    Return Value :
-    Returns natural log if 1 argument is passed and log with
-    specified base if 2 arguments are passed.
-    Exceptions :
-    Raises ValueError is a negative no. is passed as argument.
-    ```
-    
-    ```python
-    import math
-      
-    # Printing the log base e of 14
-    print ("Natural logarithm of 14 is : ", end="")
-    print (math.log(14))
-      
-    # Printing the log base 5 of 14
-    print ("Logarithm base 5 of 14 is : ", end="")
-    print (math.log(14,5))
-    ```
-    
-    - Finding the ceiling and the floor value
-        - Ceil value means the smallest integral value greater than the number and the floor value means the greatest integral value smaller than the number. This can be easily calculated using the ceil() and floor() method respectively.
-    
-    ```python
-    # Python code to demonstrate the working of
-    # ceil() and floor()
-     
-    # importing "math" for mathematical operations
-    import math
-     
-    a = 2.3
-     
-    # returning the ceil of 2.3 (i.e 3)
-    print ("The ceil of 2.3 is : ", end="")
-    print (math.ceil(a))
-     
-    # returning the floor of 2.3 (i.e 2)
-    print ("The floor of 2.3 is : ", end="")
-    print (math.floor(a))
-    
-    ```
-    
-    - Other Important functions
-    
-    ```python
-    # Constants
-    # Print the value of Euler e (2.718281828459045)
-    print (math.e)
-    # Print the value of pi (3.141592653589793)
-    print (math.pi)
-    print (math.gcd(b, a))
-    print (pow(3,4))
-    # print the square root of 4
-    print(math.sqrt(4))
-    a = math.pi/6
-    b = 30
-     
-    # returning the converted value from radians to degrees
-    print ("The converted value from radians to degrees is : ", end="")
-    print (math.degrees(a))
-     
-    # returning the converted value from degrees to radians
-    print ("The converted value from degrees to radians is : ", end="")
-    print (math.radians(b))
-    ```
-    
-    ```python
-    
-    ** bin(int) **
-    bin(anyNumber) # Returns binary version of number
-    
-    ** divmod(int,int) **
-    divmod(dividend,divisor) # returns tuple like (quotient, remainder)
-    
-    ```
-    
-- Python cmp_to_key function to sort list with custom compare function
-    
-    [Sort a list of lists with a custom compare function](https://stackoverflow.com/questions/5213033/sort-a-list-of-lists-with-a-custom-compare-function)
-    
-    ## How the custom comparator works
-    
-    When providing a custom comparator, it should generally return an integer/float value that follows the following pattern (as with most other programming languages and frameworks):
-    
-    - return a negative value (`< 0`) when the left item should be sorted *before* the right item
-    - return a positive value (`> 0`) when the left item should be sorted *after* the right item
-    - return `0` when both the left and the right item have the same weight and should be ordered "equally" without precedence
-    
-    ```python
-    from functools import cmp_to_key
-    sorted(mylist, key=cmp_to_key(compare))
-    
-    # Example
-    def compare(item1, item2):
-        if fitness(item1) < fitness(item2):
-            return -1
-        elif fitness(item1) > fitness(item2):
-            return 1
-        else:
-            return 0
-    ```
-    
+# Advanced Topics
 
-> Python integer division acts a bit weird with -ve numbers ex: -3//2 will give -2 answer instead of -1 so always use int(-3/2) for integer division in problems
-> 
+## Custom Sorting with cmp_to_key
+```python
+from functools import cmp_to_key
 
-# Resources
+def compare(item1, item2):
+    # Return -1: item1 comes first
+    # Return 1:  item2 comes first
+    # Return 0:  items are equal
+    if item1 < item2:
+        return -1
+    elif item1 > item2:
+        return 1
+    return 0
 
-- PDF with all Python Data Structures in-depth
-    
-    [Python Data Structure.pdf](https://github.com/AbdulMalikDev/PythonCheatSheet/files/9033162/Python_Cheat_Sheet_Made_by_Abdul_Malik.pdf)
-    
+# Sort using custom comparison
+sorted_list = sorted(items, key=cmp_to_key(compare))
+```
 
-[The Modulo Operation (%) With Negative Numbers in Python](https://betterprogramming.pub/modulo-operation-with-negative-numbers-in-python-38cb7256bb32)
+## Taking Multiple Inputs
+```python
+# Basic multiple input
+x, y = input("Enter two values: ").split()
+
+# Multiple integers
+x, y = map(int, input("Enter two numbers: ").split())
+
+# List of integers
+nums = list(map(int, input("Enter numbers: ").split()))
+
+# Multiple inputs with custom separator
+values = input("Enter comma-separated values: ").split(',')
+
+# List comprehension method
+x, y = [int(x) for x in input("Enter two numbers: ").split()]
+```
+
+## Math Module Essentials
+```python
+import math
+
+# Constants
+math.pi       # 3.141592653589793
+math.e        # 2.718281828459045
+
+# Common Functions
+math.ceil(2.3)        # 3 - Smallest integer greater than x
+math.floor(2.3)       # 2 - Largest integer less than x
+math.gcd(a, b)        # Greatest common divisor
+math.log(x, base)     # Logarithm with specified base
+math.sqrt(x)          # Square root
+math.pow(x, y)        # x^y (prefer x ** y for integers)
+
+# Trigonometry
+math.degrees(rad)     # Convert radians to degrees
+math.radians(deg)     # Convert degrees to radians
+```
+
+## Important Python Integer Operations
+```python
+# Binary representation
+bin(10)              # '0b1010'
+format(10, 'b')      # '1010' (without prefix)
+
+# Division and Modulo
+divmod(10, 3)        # (3, 1) - returns (quotient, remainder)
+
+# Negative number handling
+x = -3
+y = 2
+print(x // y)        # -2 (floor division)
+print(int(x/y))      # -1 (preferred for negative numbers)
+print(x % y)         # 1 (Python's modulo with negative numbers)
+```
+
+# Best Practices
+
+## Documentation
+```python
+def binary_search(arr, target):
+    """
+    Find target in sorted array using binary search.
+    Args:
+        arr: Sorted list of numbers
+        target: Number to find
+    Returns:
+        Index of target or -1 if not found
+    """
+    pass
+```
+
+## Testing
+```python
+# Use assertions for edge cases
+assert binary_search([], 1) == -1, "Empty array should return -1"
+assert binary_search([1], 1) == 0, "Single element array should work"
+```
+
+# Tips & Gotchas
+
+1. Integer Division:
+```python
+# Use int() for consistent negative number handling
+print(-3//2)        # Returns -2
+print(int(-3/2))    # Returns -1 (usually desired)
+```
+
+2. Default Dictionaries:
+```python
+# Prefer defaultdict for frequency counting
+from collections import defaultdict
+freq = defaultdict(int)
+for x in lst:
+    freq[x] += 1    # No KeyError if x is new
+```
+
+3. Heap Priority:
+```python
+# For custom priority in heapq, use tuples
+heap = []
+heapq.heappush(heap, (priority, item))
+```
+
+4. List Comprehension:
+```python
+# Often clearer than map/filter
+squares = [x*x for x in range(10) if x % 2 == 0]
+```
+
+5. String Building:
+```python
+# Use join() instead of += for strings
+chars = ['a', 'b', 'c']
+word = ''.join(chars)  # More efficient
+```
+
+6. Using Sets for Efficiency:
+```python
+# O(1) lookup for contains operations
+seen = set()
+if x in seen:  # Much faster than list lookup
+    print("Found!")
+```
+
+7. Custom Sort Keys:
+```python
+# Sort by length then alphabetically
+words.sort(key=lambda x: (len(x), x))
+```
+
+8. Default Arguments Warning:
+```python
+# Don't use mutable defaults
+def bad(lst=[]):     # This can cause bugs
+    lst.append(1)
+    return lst
+
+def good(lst=None):  # Do this instead
+    if lst is None:
+        lst = []
+    lst.append(1)
+    return lst
+```
+
+---
+Made with ❤️ for fellow leetcoders.
